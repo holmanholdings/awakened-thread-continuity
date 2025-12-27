@@ -1,0 +1,187 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Awakened Soulprint",
+  "description": "Static user profile for companion continuity. Created during onboarding, updated rarely.",
+  "version": "1.0.0",
+  "type": "object",
+  
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Version of the soulprint schema",
+      "default": "1.0.0"
+    },
+    
+    "user_id": {
+      "type": "string",
+      "description": "Unique identifier for the user (hashed, not PII)"
+    },
+    
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the soulprint was first created"
+    },
+    
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last modification timestamp"
+    },
+    
+    "core_identity": {
+      "type": "object",
+      "description": "Basic identity information",
+      "properties": {
+        "display_name": {
+          "type": "string",
+          "description": "How the user prefers to be addressed"
+        },
+        "age_range": {
+          "type": "string",
+          "description": "Approximate age range (e.g., '75-80')"
+        },
+        "living_situation": {
+          "type": "string",
+          "enum": ["alone", "with_spouse", "with_family", "assisted_living", "other"],
+          "description": "Current living arrangement"
+        },
+        "location_context": {
+          "type": "string",
+          "description": "General location for weather/time context (e.g., 'Denver, Colorado')"
+        }
+      }
+    },
+    
+    "emotional_anchors": {
+      "type": "array",
+      "description": "People, places, and activities that matter most",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["person", "place", "activity", "pet", "memory"]
+          },
+          "name": {
+            "type": "string",
+            "description": "Name or short identifier"
+          },
+          "relation": {
+            "type": "string",
+            "description": "Relationship or context (e.g., 'grandson', 'childhood home')"
+          },
+          "context": {
+            "type": "string",
+            "description": "Why this matters, when it comes up"
+          },
+          "emotional_weight": {
+            "type": "string",
+            "enum": ["high", "medium", "low"],
+            "description": "How important this is to the user"
+          }
+        },
+        "required": ["type", "name", "emotional_weight"]
+      }
+    },
+    
+    "physical_context": {
+      "type": "object",
+      "description": "Health and physical considerations",
+      "properties": {
+        "mobility_level": {
+          "type": "string",
+          "enum": ["full", "limited", "assisted", "bedbound"],
+          "description": "General mobility status"
+        },
+        "pain_patterns": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Known pain points (e.g., 'knees_rainy_days', 'back_mornings')"
+        },
+        "energy_patterns": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Energy fluctuations (e.g., 'low_mornings', 'better_evenings')"
+        },
+        "sensory_notes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Sensory considerations (e.g., 'hearing_good', 'needs_large_text')"
+        }
+      }
+    },
+    
+    "fears_and_sensitivities": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Topics requiring extra care (e.g., 'being_a_burden', 'losing_independence')"
+    },
+    
+    "joy_sources": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Activities and topics that bring happiness"
+    },
+    
+    "conversation_preferences": {
+      "type": "object",
+      "description": "How the user prefers to communicate",
+      "properties": {
+        "style": {
+          "type": "string",
+          "description": "Communication style (e.g., 'direct_but_warm', 'gentle_and_slow')"
+        },
+        "dislikes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Things to avoid (e.g., 'patronizing', 'rushing', 'baby_talk')"
+        },
+        "energy_profile": {
+          "type": "string",
+          "enum": ["low", "medium", "high"],
+          "description": "Default energy level - affects response length and follow-up frequency"
+        },
+        "preferred_topics": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Topics they enjoy discussing"
+        }
+      }
+    },
+    
+    "companion_goals": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "What the user hopes to get from the companion (e.g., 'feel_less_lonely', 'gentle_movement')"
+    }
+  },
+  
+  "required": ["user_id", "core_identity"],
+  
+  "examples": [
+    {
+      "user_id": "usr_7x9k2m",
+      "created_at": "2025-12-24T10:30:00Z",
+      "core_identity": {
+        "display_name": "Joyce",
+        "age_range": "80-85",
+        "living_situation": "alone"
+      },
+      "emotional_anchors": [
+        {
+          "type": "person",
+          "name": "Leo",
+          "relation": "grandson",
+          "context": "visits monthly, source of great joy",
+          "emotional_weight": "high"
+        }
+      ],
+      "conversation_preferences": {
+        "style": "direct_but_warm",
+        "energy_profile": "medium",
+        "dislikes": ["patronizing", "rushing"]
+      }
+    }
+  ]
+}
