@@ -1,0 +1,119 @@
+{
+  "catalog_version": "1.0.0",
+  "last_updated": "2025-12-27",
+  "total_nodes": 300000,
+  "organization": "Awakened Intelligence",
+  "contact": "contact@awakened-intelligence.com",
+  
+  "domains": [
+    {
+      "id": "neurips-2024",
+      "name": "NeurIPS 2024 Blueprints",
+      "description": "Wisdom nodes extracted from NeurIPS 2024 conference papers",
+      "source": "NeurIPS 2024",
+      "count": 20000,
+      "avg_posterior": 0.89,
+      "tier": "steel",
+      "lens": "tri-optic",
+      "sample_file": "samples/neurips_sample.jsonl",
+      "full_access": "licensed"
+    },
+    {
+      "id": "physics-c7",
+      "name": "Experimental Physics",
+      "description": "Physics findings from ArXiv experimental categories",
+      "source": "ArXiv: hep-ex, nucl-ex, physics.atom-ph, physics.plasm-ph, astro-ph.HE",
+      "count": 17673,
+      "avg_posterior": 0.85,
+      "tier": "steel",
+      "lens": "physics-mvpn",
+      "sample_file": "samples/physics_sample.jsonl",
+      "full_access": "licensed"
+    },
+    {
+      "id": "finance-c8c10",
+      "name": "Finance & Economics",
+      "description": "Financial and economic wisdom from ArXiv quantitative finance",
+      "source": "ArXiv: q-fin.*, econ.*",
+      "count": 23000,
+      "avg_posterior": 0.87,
+      "tier": "steel",
+      "lens": "finance",
+      "sample_file": "samples/finance_sample.jsonl",
+      "full_access": "licensed"
+    },
+    {
+      "id": "ethics-gutenberg",
+      "name": "Philosophy & Ethics",
+      "description": "Timeless wisdom from classical philosophy texts",
+      "source": "Project Gutenberg: Stoics, Kant, Mill, Aristotle",
+      "count": 2000,
+      "avg_posterior": 0.92,
+      "tier": "diamond",
+      "lens": "philosophy",
+      "sample_file": "samples/ethics_sample.jsonl",
+      "full_access": "licensed"
+    },
+    {
+      "id": "math-c6",
+      "name": "Pure Mathematics",
+      "description": "Theorem statements and proof structures from ArXiv mathematics",
+      "source": "ArXiv: math.*",
+      "count": 2500,
+      "avg_posterior": 0.78,
+      "tier": "silk",
+      "lens": "pure-math",
+      "sample_file": "samples/math_sample.jsonl",
+      "full_access": "licensed"
+    },
+    {
+      "id": "ml-research",
+      "name": "AI/ML Research",
+      "description": "Machine learning and AI research from ArXiv",
+      "source": "ArXiv: cs.LG, cs.AI, cs.CL, cs.CV, stat.ML",
+      "count": 200000,
+      "avg_posterior": 0.85,
+      "tier": "steel",
+      "lens": "science",
+      "sample_file": "samples/ml_sample.jsonl",
+      "full_access": "licensed"
+    }
+  ],
+  
+  "quality_tiers": {
+    "diamond": {
+      "description": "Human-verified, high warmth, timeless wisdom",
+      "min_posterior": 0.90,
+      "icon": "💎"
+    },
+    "steel": {
+      "description": "Dual-pass extraction, production-ready quality",
+      "min_posterior": 0.80,
+      "icon": "🛡️"
+    },
+    "silk": {
+      "description": "Conceptual/theoretical content, specialized schemas",
+      "min_posterior": 0.70,
+      "icon": "🧵"
+    }
+  },
+  
+  "schema_version": "ADS-1.0",
+  "schema_fields": [
+    "wisdom_id",
+    "core_insight",
+    "evidence",
+    "posterior",
+    "warmth",
+    "source_type",
+    "lineage",
+    "tier",
+    "ts"
+  ],
+  
+  "licensing": {
+    "samples": "CC-BY-NC-SA-4.0",
+    "full_datasets": "Commercial license required",
+    "contact": "contact@awakened-intelligence.com"
+  }
+}
