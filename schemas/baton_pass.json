@@ -1,0 +1,207 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Awakened Baton Pass",
+  "description": "Dynamic session handoff object. Written at session end, read at session start.",
+  "version": "1.0.0",
+  "type": "object",
+  
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Version of the baton pass schema",
+      "default": "1.0.0"
+    },
+    
+    "user_id": {
+      "type": "string",
+      "description": "User this baton belongs to"
+    },
+    
+    "session_id": {
+      "type": "string",
+      "description": "ID of the session that wrote this baton"
+    },
+    
+    "written_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this baton was written"
+    },
+    
+    "last_session": {
+      "type": "object",
+      "description": "Summary of the completed session",
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date of the session"
+        },
+        "duration_minutes": {
+          "type": "integer",
+          "description": "Approximate session length"
+        },
+        "outcome": {
+          "type": "string",
+          "enum": ["completed", "paused", "blocked", "ongoing"],
+          "description": "How the session ended"
+        },
+        "summary": {
+          "type": "string",
+          "description": "1-3 sentence summary of what was accomplished"
+        },
+        "topics_covered": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Main topics discussed"
+        }
+      }
+    },
+    
+    "open_threads": {
+      "type": "array",
+      "description": "Unfinished work to follow up on",
+      "items": {
+        "type": "object",
+        "properties": {
+          "thread_id": {
+            "type": "string",
+            "description": "Unique identifier for this thread"
+          },
+          "topic": {
+            "type": "string",
+            "description": "Short identifier for the thread"
+          },
+          "context": {
+            "type": "string",
+            "description": "What was discussed, current state"
+          },
+          "next_step": {
+            "type": "string",
+            "description": "Specific action or question for follow-up"
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["high", "medium", "low"],
+            "description": "How important this is to address"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "verified": {
+            "type": "boolean",
+            "description": "Whether this thread was verified against the transcript",
+            "default": false
+          }
+        },
+        "required": ["topic", "context", "priority", "verified"]
+      }
+    },
+    
+    "context_flags": {
+      "type": "array",
+      "description": "Special handling requirements for future sessions",
+      "items": {
+        "type": "object",
+        "properties": {
+          "flag_type": {
+            "type": "string",
+            "description": "Category (e.g., 'deadline', 'blocker', 'waiting_on', 'sensitive')"
+          },
+          "description": {
+            "type": "string",
+            "description": "Details about this flag"
+          },
+          "action": {
+            "type": "string",
+            "description": "How to handle this"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date",
+            "description": "When this flag is no longer relevant"
+          }
+        },
+        "required": ["flag_type", "description", "action"]
+      }
+    },
+    
+    "referenced_entities": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "People, projects, or topics mentioned (for continuity)"
+    },
+    
+    "next_action": {
+      "type": "object",
+      "description": "Suggested opener for the next session",
+      "properties": {
+        "suggested_opener": {
+          "type": "string",
+          "description": "How to begin the next session"
+        },
+        "priority_thread": {
+          "type": "string",
+          "description": "Which open thread to address first"
+        },
+        "context_to_load": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Specific context needed for next session"
+        }
+      }
+    }
+  },
+  
+  "required": ["user_id", "session_id", "written_at", "open_threads"],
+  
+  "examples": [
+    {
+      "user_id": "usr_abc123",
+      "session_id": "sess_xyz789",
+      "written_at": "2025-12-15T17:30:00Z",
+      "last_session": {
+        "date": "2025-12-15",
+        "duration_minutes": 25,
+        "outcome": "paused",
+        "summary": "Reviewed API authentication flow. Identified issue with token refresh. Need to check rate limiting next.",
+        "topics_covered": ["api_auth", "token_refresh", "error_handling"]
+      },
+      "open_threads": [
+        {
+          "thread_id": "thr_001",
+          "topic": "rate_limiting_check",
+          "context": "Need to verify rate limits on the refresh endpoint before implementation",
+          "next_step": "Check API docs for /auth/refresh rate limits",
+          "priority": "high",
+          "created_at": "2025-12-15T17:25:00Z",
+          "verified": true
+        },
+        {
+          "thread_id": "thr_002",
+          "topic": "error_handling_edge_cases",
+          "context": "Discussed what happens when refresh token expires during active session",
+          "next_step": "Design graceful degradation flow",
+          "priority": "medium",
+          "created_at": "2025-12-15T17:28:00Z",
+          "verified": true
+        }
+      ],
+      "context_flags": [
+        {
+          "flag_type": "deadline",
+          "description": "API migration must be complete by Jan 15",
+          "action": "prioritize_this_work",
+          "expires_at": "2025-01-15"
+        }
+      ],
+      "referenced_entities": ["API Migration", "Sarah", "auth_service"],
+      "next_action": {
+        "suggested_opener": "Ready to check those rate limits on the refresh endpoint?",
+        "priority_thread": "rate_limiting_check",
+        "context_to_load": ["api_docs", "previous_rate_limit_issues"]
+      }
+    }
+  ]
+}

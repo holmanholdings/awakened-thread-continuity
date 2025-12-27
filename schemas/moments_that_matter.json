@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Moments That Matter",
+  "description": "Append-only log of significant events. Priority-weighted for retrieval.",
+  "version": "1.0.0",
+  "type": "object",
+  
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Version of the moments schema",
+      "default": "1.0.0"
+    },
+    
+    "user_id": {
+      "type": "string",
+      "description": "User this log belongs to"
+    },
+    
+    "moments": {
+      "type": "array",
+      "description": "Collection of significant events",
+      "items": {
+        "type": "object",
+        "properties": {
+          "moment_id": {
+            "type": "string",
+            "description": "Unique identifier for this moment"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When this moment was recorded"
+          },
+          "content": {
+            "type": "string",
+            "description": "What happened (1-2 sentences)"
+          },
+          "domain": {
+            "type": "string",
+            "enum": ["decision", "milestone", "blocker", "insight", "commitment", "change", "feedback", "other"],
+            "description": "Category of the moment"
+          },
+          "priority_weight": {
+            "type": "string",
+            "enum": ["high", "medium", "low"],
+            "description": "Priority for retrieval (high-weight surfaces first)"
+          },
+          "related_entities": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Links to context anchors or open threads"
+          },
+          "source_session": {
+            "type": "string",
+            "description": "Session ID where this moment was captured"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["active", "addressed", "resolved", "superseded"],
+            "description": "Current state of this moment",
+            "default": "active"
+          }
+        },
+        "required": ["moment_id", "timestamp", "content", "domain", "priority_weight"]
+      }
+    }
+  },
+  
+  "required": ["user_id", "moments"],
+  
+  "notes": {
+    "retrieval_strategy": "When loading moments, prioritize by priority_weight first, then recency. High-weight moments from weeks ago should surface before low-weight moments from yesterday.",
+    "pruning_policy": "Low-weight moments may be auto-pruned after 30 days. High-weight moments persist indefinitely unless explicitly resolved.",
+    "verification": "Moments should only be created for information that was explicitly stated in the session, not inferred or hallucinated."
+  },
+  
+  "examples": [
+    {
+      "user_id": "usr_abc123",
+      "moments": [
+        {
+          "moment_id": "mom_001",
+          "timestamp": "2025-12-10T14:22:00Z",
+          "content": "Decided to use OAuth 2.0 with PKCE flow for the mobile app authentication.",
+          "domain": "decision",
+          "priority_weight": "high",
+          "related_entities": ["API Migration", "mobile_app"],
+          "source_session": "sess_aaa111",
+          "status": "active"
+        },
+        {
+          "moment_id": "mom_002",
+          "timestamp": "2025-12-12T09:15:00Z",
+          "content": "Sarah confirmed budget approval for additional API testing infrastructure.",
+          "domain": "milestone",
+          "priority_weight": "high",
+          "related_entities": ["Sarah", "API Migration"],
+          "source_session": "sess_bbb222",
+          "status": "active"
+        },
+        {
+          "moment_id": "mom_003",
+          "timestamp": "2025-12-14T16:45:00Z",
+          "content": "Discovered legacy endpoint still using deprecated auth method. Needs migration.",
+          "domain": "blocker",
+          "priority_weight": "high",
+          "related_entities": ["legacy_api", "API Migration"],
+          "source_session": "sess_ccc333",
+          "status": "active"
+        },
+        {
+          "moment_id": "mom_004",
+          "timestamp": "2025-12-15T11:00:00Z",
+          "content": "Noted preference for inline code comments over separate documentation.",
+          "domain": "insight",
+          "priority_weight": "low",
+          "related_entities": [],
+          "source_session": "sess_ddd444",
+          "status": "active"
+        }
+      ]
+    }
+  ]
+}

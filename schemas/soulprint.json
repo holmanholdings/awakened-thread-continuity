@@ -1,0 +1,175 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Awakened Soulprint",
+  "description": "Stable user profile for agent continuity. Created during onboarding, updated on significant changes.",
+  "version": "1.0.0",
+  "type": "object",
+  
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Version of the soulprint schema",
+      "default": "1.0.0"
+    },
+    
+    "user_id": {
+      "type": "string",
+      "description": "Unique identifier for the user"
+    },
+    
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the soulprint was created"
+    },
+    
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last modification timestamp"
+    },
+    
+    "core_identity": {
+      "type": "object",
+      "description": "Basic user information",
+      "properties": {
+        "display_name": {
+          "type": "string",
+          "description": "How the user prefers to be addressed"
+        },
+        "role": {
+          "type": "string",
+          "description": "User's role or context (e.g., 'developer', 'manager', 'student')"
+        },
+        "timezone": {
+          "type": "string",
+          "description": "User's timezone for scheduling context"
+        },
+        "locale": {
+          "type": "string",
+          "description": "Language/locale preferences"
+        }
+      }
+    },
+    
+    "context_anchors": {
+      "type": "array",
+      "description": "Important entities the user frequently references",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["person", "project", "organization", "topic", "tool", "location"],
+            "description": "Category of the anchor"
+          },
+          "name": {
+            "type": "string",
+            "description": "Identifier for this anchor"
+          },
+          "context": {
+            "type": "string",
+            "description": "Why this matters, when it comes up"
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["high", "medium", "low"],
+            "description": "How important this is to the user"
+          }
+        },
+        "required": ["type", "name", "priority"]
+      }
+    },
+    
+    "preferences": {
+      "type": "object",
+      "description": "Communication and interaction preferences",
+      "properties": {
+        "communication_style": {
+          "type": "string",
+          "description": "Preferred style (e.g., 'concise', 'detailed', 'casual', 'formal')"
+        },
+        "response_length": {
+          "type": "string",
+          "enum": ["brief", "standard", "detailed"],
+          "description": "Preferred response verbosity"
+        },
+        "expertise_level": {
+          "type": "string",
+          "enum": ["beginner", "intermediate", "expert"],
+          "description": "Technical expertise for calibrating explanations"
+        },
+        "avoid_topics": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Topics to avoid or handle carefully"
+        }
+      }
+    },
+    
+    "constraints": {
+      "type": "object",
+      "description": "Operational constraints and boundaries",
+      "properties": {
+        "working_hours": {
+          "type": "string",
+          "description": "When the user is typically available"
+        },
+        "response_urgency": {
+          "type": "string",
+          "enum": ["asap", "same_day", "flexible"],
+          "description": "How quickly they expect responses"
+        },
+        "data_sensitivity": {
+          "type": "string",
+          "enum": ["standard", "confidential", "restricted"],
+          "description": "How carefully to handle their information"
+        }
+      }
+    },
+    
+    "goals": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "What the user is trying to accomplish with this agent"
+    }
+  },
+  
+  "required": ["user_id", "core_identity"],
+  
+  "examples": [
+    {
+      "user_id": "usr_abc123",
+      "created_at": "2025-12-01T10:30:00Z",
+      "core_identity": {
+        "display_name": "Alex",
+        "role": "engineering_lead",
+        "timezone": "America/Denver"
+      },
+      "context_anchors": [
+        {
+          "type": "project",
+          "name": "API Migration",
+          "context": "Q1 priority, auth system rewrite",
+          "priority": "high"
+        },
+        {
+          "type": "person",
+          "name": "Sarah",
+          "context": "Product manager, primary stakeholder",
+          "priority": "high"
+        }
+      ],
+      "preferences": {
+        "communication_style": "concise",
+        "response_length": "brief",
+        "expertise_level": "expert"
+      },
+      "goals": [
+        "Track project milestones",
+        "Prepare status updates",
+        "Debug integration issues"
+      ]
+    }
+  ]
+}
